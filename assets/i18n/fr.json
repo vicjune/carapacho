@@ -1,0 +1,90 @@
+{
+  "VALUE": "Valeur",
+  "CARD": {
+    "TYPE": {
+      "ACTION": "Action",
+      "UNIT": "Unité"
+    },
+    "ACTION": {
+      "BASE": {
+        "TWO": {
+          "TEXT": "Jouer une Unité supplémentaire.",
+          "IMPROVED_TEXT": "Jouer deux Unités supplémentaires sur deux lieux différents."
+        },
+        "THREE": {
+          "TEXT": "Détruire une Unité de valeur 2 ou moins.",
+          "IMPROVED_TEXT": "Détruire une Unité."
+        },
+        "FOUR": {
+          "TEXT": "Déplacer une Unité vers un autre Lieu.",
+          "IMPROVED_TEXT": "Déplacer jusqu'à deux Unités vers d'autres Lieux."
+        },
+        "FIVE": {
+          "TEXT": "Changer le propriétaire d'une Unité de valeur 1 ou moins.",
+          "IMPROVED_TEXT": "Changer le propriétaire d'une Unité de valeur 2 ou moins."
+        },
+        "SIX": {
+          "TEXT": "+2 ou -2 à la valeur d'une Unité jusqu'à la fin du tour.",
+          "IMPROVED_TEXT": "+1 à la valeur de chacune de vos Unités sur un Lieu jusqu'à la fin du tour OU -1 à la valeur de chaque Unité adverse sur un Lieu jusqu’au début de votre prochain tour."
+        },
+        "SEVEN": {
+          "TEXT": "Renvoyer une Unité dans la main de son propriétaire.",
+          "IMPROVED_TEXT": "Renvoyer une Unité dans la main d’un joueur de votre choix <i>(ou vous-même)</i>. Son propriétaire peut immédiatement jouer une Unité supplémentaire sur le même Lieu."
+        }
+      },
+      "SUIT": {
+        "HEART": {
+          "TEXT": "<b>Action améliorée, l'effet devient: </b>"
+        },
+        "DIAMOND": {
+          "TEXT": "Vous pouvez jouer cette Action avant ou après la conquête <i>(maximum 1 avant et 1 après par conquête)</i>."
+        },
+        "SPADE": {
+          "TEXT": "<b>Effet quand jouée <i>(maximum 1 par tour)</i>:</b> Vous pouvez jouer une Action supplémentaire."
+        },
+        "CLUB": {
+          "TEXT": "<b>Effet quand jouée:</b> Choisissez un joueur <i>(ou vous-même)</i> s’il a 5 cartes ou moins en main, il pioche une carte, sinon il en défausse une de son choix."
+        }
+      }
+    },
+    "UNIT": {
+      "BASE": {
+        "EIGHT": {
+          "TEXT": "<b>Permanent:</b> Si cette carte se trouve sur un Lieu au moment de sa conquête, son propriétaire peut jouer 1 Action avant-conquête ou après-conquête supplémentaire."
+        },
+        "NINE": {
+          "TEXT": "<b>Effet quand détruite:</b> Son propriétaire peut récupérer dans sa main une carte de la défausse."
+        },
+        "TEN": {
+          "TEXT": "<b>Effet quand jouée:</b> Jusqu’au début de votre prochain tour, les autres joueurs ne peuvent pas jouer d’Unités sur d’autres Lieux que celle où se trouve cette carte."
+        },
+        "JACK": {
+          "TEXT": "<b>Effet quand jouée:</b> -1 à toutes les autres Unités sur le Lieu jusqu'à la fin du tour."
+        },
+        "QUEEN": {
+          "TEXT": "<b>Effet quand jouée:</b> Révélez la première carte de la pioche jusqu'à tomber sur une Action <i>(les Unités sont re-mélangées dans la pioche)</i> que vous pouvez jouer immédiatement comme Action supplémentaire sans prendre en compte son symbole."
+        },
+        "KING": {
+          "TEXT": "<b>Effet quand jouée:</b> Vous pouvez jouer un 8, 9 ou 10 comme Unité supplémentaire sur le même Lieu."
+        },
+        "ACE": {
+          "TEXT": ""
+        }
+      },
+      "SUIT": {
+        "HEART": {
+          "TEXT": "<b>Une fois par tour par Unité <i>(pendant votre tour, hors conquête)</i>:</b> Vous pouvez défausser une carte de votre main pour déplacer cette Unité AVEC une Unité de valeur inférieure ou égale de ce Lieu vers un autre Lieu."
+        },
+        "DIAMOND": {
+          "TEXT": "<b>Permanent:</b> Cachée."
+        },
+        "SPADE": {
+          "TEXT": "<b>Permanent:</b> Lorsqu’une Unité adverse de valeur inférieure est déplacée sur le Lieu de cette Unité, elle est détruite."
+        },
+        "CLUB": {
+          "TEXT": "<b>Permanent:</b> Tant que vous avez 3 cartes ou moins en main, a +1 en valeur et est immunisée aux effets adverses."
+        }
+      }
+    }
+  }
+}

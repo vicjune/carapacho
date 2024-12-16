@@ -1,11 +1,10 @@
 import { alpha, Box, SxProps } from '@mui/material';
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
-  ActionCardBase,
   CardSuitId,
   Card as CardType,
   CardTypeId,
-  cardTypes,
   UnitCardBase,
 } from '../utils/cards';
 
@@ -17,10 +16,19 @@ export const Card: FC<{
   sx?: SxProps;
   scale?: number;
 }> = ({ card, sx, scale = 1 }) => {
+  const { t } = useTranslation();
+
   const scaled = (number: number) => number * scale;
 
+  const baseText = t(`CARD.${card.type}.BASE.${card.base.id}.TEXT`);
+  const suitText = `${t(`CARD.${card.type}.SUIT.${card.suit.id}.TEXT`)}${
+    card.type === CardTypeId.ACTION && card.suit.id === CardSuitId.HEART
+      ? ` ${t(`CARD.${card.type}.BASE.${card.base.id}.IMPROVED_TEXT`)}`
+      : ''
+  }`;
+
   const getTextFontSize = () => {
-    const totalLength = (card.base.text || '').length + card.suit.text.length;
+    const totalLength = baseText.length + suitText.length;
 
     if (totalLength > 300) {
       return 12;
@@ -30,7 +38,11 @@ export const Card: FC<{
       return 14;
     }
 
-    return 16;
+    if (totalLength > 100) {
+      return 16;
+    }
+
+    return 18;
   };
 
   return (
@@ -48,7 +60,7 @@ export const Card: FC<{
         border: '1px solid black',
         overflow: 'hidden',
         breakInside: 'avoid',
-        '-webkit-print-color-adjust': 'exact !important',
+        WebkitPrintColorAdjust: 'exact',
         '@media print': {
           backgroundImage: 'none',
           height: 'auto',
@@ -84,9 +96,7 @@ export const Card: FC<{
             px: scaled(2),
           }}
         >
-          <Box sx={{ fontSize: scaled(40) }}>
-            {cardTypes.find(({ id }) => id === card.type)?.title}
-          </Box>
+          <Box sx={{ fontSize: scaled(40) }}>{t(`CARD.TYPE.${card.type}`)}</Box>
           {card.type === CardTypeId.UNIT && (
             <Box
               sx={{
@@ -98,7 +108,7 @@ export const Card: FC<{
                 color: 'white',
               }}
             >
-              valeur{' '}
+              {t('VALUE')}{' '}
               <Box component="span" sx={{ fontWeight: 'bold' }}>
                 {(card.base as UnitCardBase).value}
               </Box>
@@ -116,7 +126,7 @@ export const Card: FC<{
             justifyContent: 'center',
           }}
         >
-          {card.base.text && (
+          {baseText && (
             <Box sx={{ mb: scaled(1) }}>
               <Box
                 sx={{
@@ -135,9 +145,7 @@ export const Card: FC<{
               </Box>
               <Box
                 component="span"
-                dangerouslySetInnerHTML={{
-                  __html: card.base.text,
-                }}
+                dangerouslySetInnerHTML={{ __html: baseText }}
               />
             </Box>
           )}
@@ -154,14 +162,7 @@ export const Card: FC<{
             </Box>
             <Box
               component="span"
-              dangerouslySetInnerHTML={{
-                __html: `${card.suit.text}${
-                  card.type === CardTypeId.ACTION &&
-                  card.suit.id === CardSuitId.HEART
-                    ? (card.base as ActionCardBase).improvedText
-                    : ''
-                }`,
-              }}
+              dangerouslySetInnerHTML={{ __html: suitText }}
             />
           </Box>
         </Box>

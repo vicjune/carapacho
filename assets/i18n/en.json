@@ -1,0 +1,90 @@
+{
+  "VALUE": "Value",
+  "CARD": {
+    "TYPE": {
+      "ACTION": "Action",
+      "UNIT": "Unit"
+    },
+    "ACTION": {
+      "BASE": {
+        "TWO": {
+          "TEXT": "Play an additional Unit.",
+          "IMPROVED_TEXT": "Play two additional Units on two different Locations."
+        },
+        "THREE": {
+          "TEXT": "Destroy a Unit with a value of 2 or less.",
+          "IMPROVED_TEXT": "Destroy a Unit."
+        },
+        "FOUR": {
+          "TEXT": "Move a Unit to another Location.",
+          "IMPROVED_TEXT": "Move up to two Units to other Locations."
+        },
+        "FIVE": {
+          "TEXT": "Change the owner of a Unit with a value of 1 or less.",
+          "IMPROVED_TEXT": "Change the owner of a Unit with a value of 2 or less."
+        },
+        "SIX": {
+          "TEXT": "+2 or -2 to the value of a Unit until the end of the turn.",
+          "IMPROVED_TEXT": "+1 to the value of all your Units at a Location until the end of the turn OR -1 to the value of all opposing Units at a Location until the start of your next turn."
+        },
+        "SEVEN": {
+          "TEXT": "Return a Unit to its owner's hand.",
+          "IMPROVED_TEXT": "Return a Unit to the hand of a player of your choice <i>(or yourself)</i>. Its owner may immediately play an additional Unit at the same Location."
+        }
+      },
+      "SUIT": {
+        "HEART": {
+          "TEXT": "<b>Improved Action, the effect becomes: </b>"
+        },
+        "DIAMOND": {
+          "TEXT": "You can play this Action before or after conquest <i>(maximum 1 before and 1 after per conquest)</i>."
+        },
+        "SPADE": {
+          "TEXT": "<b>Effect when played <i>(maximum 1 per turn)</i>:</b> You can play an additional Action."
+        },
+        "CLUB": {
+          "TEXT": "<b>Effect when played:</b> Choose a player <i>(or yourself)</i>; if they have 5 or fewer cards in hand, they draw a card; otherwise, they discard one card of their choice."
+        }
+      }
+    },
+    "UNIT": {
+      "BASE": {
+        "EIGHT": {
+          "TEXT": "<b>Permanent:</b> If this card is on a Location at the time of its conquest, its owner may play 1 additional pre-conquest or post-conquest Action."
+        },
+        "NINE": {
+          "TEXT": "<b>Effect when destroyed:</b> Its owner may return a card from the discard pile to their hand."
+        },
+        "TEN": {
+          "TEXT": "<b>Effect when played:</b> Until the start of your next turn, other players cannot play Units on Locations other than the one where this card is located."
+        },
+        "JACK": {
+          "TEXT": "<b>Effect when played:</b> -1 to all other Units at the Location until the end of the turn."
+        },
+        "QUEEN": {
+          "TEXT": "<b>Effect when played:</b> Reveal cards from the draw pile until you find an Action <i>(Units are shuffled back into the pile)</i>, which you may play immediately as an additional Action, ignoring its suit."
+        },
+        "KING": {
+          "TEXT": "<b>Effect when played:</b> You may play an 8, 9, or 10 as an additional Unit at the same Location."
+        },
+        "ACE": {
+          "TEXT": ""
+        }
+      },
+      "SUIT": {
+        "HEART": {
+          "TEXT": "<b>Once per turn per Unit <i>(during your turn, outside of conquest)</i>:</b> You may discard a card from your hand to move this Unit ALONG WITH a Unit of equal or lesser value from this Location to another Location."
+        },
+        "DIAMOND": {
+          "TEXT": "<b>Permanent:</b> Hidden."
+        },
+        "SPADE": {
+          "TEXT": "<b>Permanent:</b> When an opposing Unit of lesser value moves to this Unit's Location, it is destroyed."
+        },
+        "CLUB": {
+          "TEXT": "<b>Permanent:</b> As long as you have 3 or fewer cards in hand, it gains +1 value and is immune to opposing effects."
+        }
+      }
+    }
+  }
+}
