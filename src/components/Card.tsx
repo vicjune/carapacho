@@ -1,18 +1,19 @@
+import { Bolt } from '@mui/icons-material';
 import { alpha, Box, SxProps } from '@mui/material';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  CardSuitId,
-  Card as CardType,
+  ActionCard,
+  Card as CardInterface,
   CardTypeId,
-  UnitCardBase,
-} from '../utils/cards';
+  UnitCard,
+} from '../types/Card';
 
 const HEIGHT = 500;
 const WIDTH = HEIGHT * 0.7159090909;
 
 export const Card: FC<{
-  card: CardType;
+  card: CardInterface;
   sx?: SxProps;
   scale?: number;
 }> = ({ card, sx, scale = 1 }) => {
@@ -22,7 +23,7 @@ export const Card: FC<{
 
   const baseText = t(`CARD.${card.type}.BASE.${card.base.id}.TEXT`);
   const suitText = `${t(`CARD.${card.type}.SUIT.${card.suit.id}.TEXT`)}${
-    card.type === CardTypeId.ACTION && card.suit.id === CardSuitId.HEART
+    card.type === CardTypeId.ACTION && (card as ActionCard).improved
       ? ` ${t(`CARD.${card.type}.BASE.${card.base.id}.IMPROVED_TEXT`)}`
       : ''
   }`;
@@ -96,22 +97,70 @@ export const Card: FC<{
             px: scaled(2),
           }}
         >
-          <Box sx={{ fontSize: scaled(40) }}>{t(`CARD.TYPE.${card.type}`)}</Box>
-          {card.type === CardTypeId.UNIT && (
+          <Box
+            sx={{
+              fontSize: scaled(40),
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <Box sx={{ mr: scaled(1) }}>{t(`CARD.TYPE.${card.type}`)}</Box>
+          </Box>
+          {card.type === CardTypeId.UNIT ? (
             <Box
               sx={{
-                fontSize: scaled(22),
-                bgcolor: 'grey',
-                borderRadius: scaled(3),
-                px: scaled(2),
-                py: scaled(0.5),
-                color: 'white',
+                display: 'flex',
+                alignItems: 'center',
               }}
             >
-              {t('VALUE')}{' '}
-              <Box component="span" sx={{ fontWeight: 'bold' }}>
-                {(card.base as UnitCardBase).value}
+              <Box
+                sx={{
+                  fontSize: scaled(14),
+                  bgcolor: 'grey',
+                  borderTopLeftRadius: scaled(4),
+                  borderBottomLeftRadius: scaled(4),
+                  px: scaled(1),
+                  py: scaled(0.2),
+                  color: 'white',
+                  mr: scaled(-1),
+                  zIndex: 1,
+                }}
+              >
+                {t('VALUE')}
               </Box>
+              <Box
+                component="span"
+                sx={{
+                  fontWeight: 'bold',
+                  bgcolor: 'grey',
+                  fontSize: scaled(28),
+                  color: 'white',
+                  borderRadius: '50%',
+                  height: scaled(40),
+                  width: scaled(40),
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {(card as UnitCard).base.value}
+              </Box>
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                bgcolor: 'grey',
+
+                color: 'white',
+                borderRadius: '50%',
+                height: scaled(40),
+                width: scaled(40),
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Bolt sx={{ color: 'white', fontSize: scaled(30) }} />
             </Box>
           )}
         </Box>

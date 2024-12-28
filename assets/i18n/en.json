@@ -1,5 +1,5 @@
 {
-  "VALUE": "Value",
+  "VALUE": "value",
   "CARD": {
     "TYPE": {
       "ACTION": "Action",
@@ -62,7 +62,7 @@
           "TEXT": "<b>Effect when played:</b> -1 to all other Units at the Location until the end of the turn."
         },
         "QUEEN": {
-          "TEXT": "<b>Effect when played:</b> Reveal cards from the draw pile until you find an Action <i>(Units are shuffled back into the pile)</i>, which you may play immediately as an additional Action, ignoring its suit."
+          "TEXT": "<b>Effect when played:</b> Reveal cards from the draw pile until you find an Action, which you may play immediately as an additional Action, ignoring its suit."
         },
         "KING": {
           "TEXT": "<b>Effect when played:</b> You may play an 8, 9, or 10 as an additional Unit at the same Location."
@@ -73,7 +73,7 @@
       },
       "SUIT": {
         "HEART": {
-          "TEXT": "<b>Once per turn per Unit <i>(during your turn, outside of conquest)</i>:</b> You may discard a card from your hand to move this Unit ALONG WITH a Unit of equal or lesser value from this Location to another Location."
+          "TEXT": "<b>Once per turn per Unit:</b> You may discard a card from your hand to move this Unit ALONG WITH a Unit of equal or lesser value from this Location to another Location."
         },
         "DIAMOND": {
           "TEXT": "<b>Permanent:</b> Hidden."

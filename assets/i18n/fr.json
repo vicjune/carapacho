@@ -1,5 +1,5 @@
 {
-  "VALUE": "Valeur",
+  "VALUE": "valeur",
   "CARD": {
     "TYPE": {
       "ACTION": "Action",
@@ -62,7 +62,7 @@
           "TEXT": "<b>Effet quand jouée:</b> -1 à toutes les autres Unités sur le Lieu jusqu'à la fin du tour."
         },
         "QUEEN": {
-          "TEXT": "<b>Effet quand jouée:</b> Révélez la première carte de la pioche jusqu'à tomber sur une Action <i>(les Unités sont re-mélangées dans la pioche)</i> que vous pouvez jouer immédiatement comme Action supplémentaire sans prendre en compte son symbole."
+          "TEXT": "<b>Effet quand jouée:</b> Révélez la première carte de la pioche jusqu'à tomber sur une Action que vous pouvez jouer immédiatement comme Action supplémentaire sans prendre en compte son symbole."
         },
         "KING": {
           "TEXT": "<b>Effet quand jouée:</b> Vous pouvez jouer un 8, 9 ou 10 comme Unité supplémentaire sur le même Lieu."
@@ -73,7 +73,7 @@
       },
       "SUIT": {
         "HEART": {
-          "TEXT": "<b>Une fois par tour par Unité <i>(pendant votre tour, hors conquête)</i>:</b> Vous pouvez défausser une carte de votre main pour déplacer cette Unité AVEC une Unité de valeur inférieure ou égale de ce Lieu vers un autre Lieu."
+          "TEXT": "<b>Une fois par tour par Unité:</b> Vous pouvez défausser une carte de votre main pour déplacer cette Unité AVEC une Unité de valeur inférieure ou égale de ce Lieu vers un autre Lieu."
         },
         "DIAMOND": {
           "TEXT": "<b>Permanent:</b> Cachée."

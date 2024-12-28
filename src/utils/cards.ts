@@ -1,58 +1,22 @@
-export enum CardBaseId {
-  TWO = 'TWO',
-  THREE = 'THREE',
-  FOUR = 'FOUR',
-  FIVE = 'FIVE',
-  SIX = 'SIX',
-  SEVEN = 'SEVEN',
-  EIGHT = 'EIGHT',
-  NINE = 'NINE',
-  TEN = 'TEN',
-  JACK = 'JACK',
-  QUEEN = 'QUEEN',
-  KING = 'KING',
-  ACE = 'ACE',
-}
-
-export enum CardSuitId {
-  HEART = 'HEART',
-  DIAMOND = 'DIAMOND',
-  SPADE = 'SPADE',
-  CLUB = 'CLUB',
-}
-
-export enum CardTypeId {
-  ACTION = 'ACTION',
-  UNIT = 'UNIT',
-}
-
-export interface CardType {
-  id: CardTypeId;
-  title: string;
-}
-
-export interface ActionCardBase {
-  id: CardBaseId;
-  title: string;
-}
-
-export interface UnitCardBase {
-  id: CardBaseId;
-  title: string;
-  value: number;
-}
-
-export interface CardSuit {
-  id: CardSuitId;
-  title: string;
-}
-
-export interface Card {
-  id: string;
-  type: CardTypeId;
-  base: ActionCardBase | UnitCardBase;
-  suit: CardSuit;
-}
+import {
+  ActionCard,
+  ActionCardBase,
+  ActionCardSuit,
+  Card,
+  CardBaseId,
+  CardSuitId,
+  CardType,
+  CardTypeId,
+  UnitCard,
+  UnitCardBase,
+  UnitCardSuit,
+} from '../types/Card';
+import {
+  discardRandomCardFromHand,
+  drawOneCard,
+  updateGameState,
+} from './game';
+import { askUserForPlayerTarget } from './userInputs';
 
 export const cardTypes: CardType[] = [
   {
@@ -65,7 +29,7 @@ export const cardTypes: CardType[] = [
   },
 ];
 
-export const ActionsCardBases: ActionCardBase[] = [
+export const actionsCardBases: ActionCardBase[] = [
   {
     id: CardBaseId.TWO,
     title: '2',
@@ -130,7 +94,50 @@ export const unitCardBases: UnitCardBase[] = [
   },
 ];
 
-export const ActionCardSuits: CardSuit[] = [
+export const actionCardSuits: ActionCardSuit[] = [
+  {
+    id: CardSuitId.HEART,
+    title: '♥️',
+  },
+  {
+    id: CardSuitId.DIAMOND,
+    title: '♦️',
+  },
+  {
+    id: CardSuitId.SPADE,
+    title: '♠️',
+    onPlayed: async ({ card }) =>
+      updateGameState((prev) => ({
+        ...prev,
+        players: prev.players.map((player) =>
+          player.id === card.ownerId
+            ? {
+                ...player,
+                actionsLeftToPlay:
+                  player.actionsAlreadyPlayed + player.actionsLeftToPlay < 2
+                    ? player.actionsLeftToPlay + 1
+                    : player.actionsLeftToPlay,
+              }
+            : player,
+        ),
+      })),
+  },
+  {
+    id: CardSuitId.CLUB,
+    title: '♣️',
+    onPlayed: async ({ gameState }) => {
+      const targetId = await askUserForPlayerTarget();
+      const target = gameState.players.find(({ id }) => id === targetId);
+      if (!target) return gameState;
+      if (target.hand.length > 5) {
+        return discardRandomCardFromHand(target);
+      }
+      return drawOneCard(gameState, target.id);
+    },
+  },
+];
+
+export const unitCardSuits: UnitCardSuit[] = [
   {
     id: CardSuitId.HEART,
     title: '♥️',
@@ -149,41 +156,35 @@ export const ActionCardSuits: CardSuit[] = [
   },
 ];
 
-export const unitCardSuits: CardSuit[] = [
-  {
-    id: CardSuitId.HEART,
-    title: '♥️',
-  },
-  {
-    id: CardSuitId.DIAMOND,
-    title: '♦️',
-  },
-  {
-    id: CardSuitId.SPADE,
-    title: '♠️',
-  },
-  {
-    id: CardSuitId.CLUB,
-    title: '♣️',
-  },
-];
-
-const buildCards = (
-  type: CardTypeId,
-  lieux: (UnitCardBase | ActionCardBase)[],
-  suits: CardSuit[],
-) =>
-  lieux.reduce<Card[]>((prev, cardBase) => {
+const buildActionCards = (bases: ActionCardBase[], suits: ActionCardSuit[]) =>
+  bases.reduce<ActionCard[]>((prev, cardBase) => {
     const newCards = suits.map((cardSuit) => ({
       id: `${cardBase.id}_OF_${cardSuit.id}S`,
-      type,
+      type: CardTypeId.ACTION as const,
       base: cardBase,
       suit: cardSuit,
+      improved: cardSuit.id === CardSuitId.HEART,
+      canBePlayedDuringConquest: cardSuit.id === CardSuitId.DIAMOND,
+    }));
+    return [...prev, ...newCards];
+  }, []);
+
+const buildUnitCards = (bases: UnitCardBase[], suits: UnitCardSuit[]) =>
+  bases.reduce<UnitCard[]>((prev, cardBase) => {
+    const newCards = suits.map((cardSuit) => ({
+      id: `${cardBase.id}_OF_${cardSuit.id}S`,
+      type: CardTypeId.UNIT as const,
+      base: cardBase,
+      suit: cardSuit,
+      hidden: false,
+      taunt: false,
+      powerActivated: false,
+      valueModifiers: [],
     }));
     return [...prev, ...newCards];
   }, []);
 
 export const cards: Card[] = [
-  ...buildCards(CardTypeId.ACTION, ActionsCardBases, ActionCardSuits),
-  ...buildCards(CardTypeId.UNIT, unitCardBases, unitCardSuits),
+  ...buildActionCards(actionsCardBases, actionCardSuits),
+  ...buildUnitCards(unitCardBases, unitCardSuits),
 ];
