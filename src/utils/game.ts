@@ -133,6 +133,8 @@ export const drawOneCard = async (gameState: GameState, playerId: string) => {
     [cardToDraw] = state.drawPile;
   }
 
+  if (!cardToDraw) return state;
+
   triggercardsComponents(
     state,
     (gs) =>
@@ -237,7 +239,7 @@ export const moveUnit = async (
   );
 
   if (!arrivalPlace) {
-    return;
+    return updatedGameState;
   }
 
   return promiseSequence(
@@ -304,6 +306,10 @@ export const triggerConquest = async (place: Place) => {
     places: prev.places.map((p) =>
       p.id === place.id ? { ...p, isBeeingConquered: true } : p,
     ),
+    players: prev.players.map((player) => ({
+      ...player,
+      actionsBeforeConquestLeft: 1,
+    })),
   }));
 
   return promiseSequence(
@@ -334,7 +340,7 @@ const isVictory = (gameState: GameState) => {
   const sortedWinners = [...potentialWinners].sort(
     (playerA, playerB) => playerA.score - playerB.score,
   );
-  return sortedWinners[0].score !== sortedWinners[1].score;
+  return sortedWinners[0]?.score !== sortedWinners[1]?.score;
 };
 
 export const newTurn = async (gameState: GameState) => {
@@ -353,6 +359,8 @@ export const newTurn = async (gameState: GameState) => {
       newFullTurn = true;
       [nextPlayer] = prev.players;
     }
+
+    if (!nextPlayer) return gameState;
 
     return {
       ...prev,
@@ -375,18 +383,21 @@ export const newTurn = async (gameState: GameState) => {
       players: prev.players.map((player) => ({
         ...player,
         actionsAlreadyPlayed: 0,
-        actionsLeftToPlay: 1,
-        unitsLeftToPlay: 1,
-        actionsBeforeConquestLeft: 1,
-        actionsAfterConquestLeft: 1,
+        actionsLeftToPlay: player.id === nextPlayer.id ? 1 : 0,
+        unitsLeftToPlay: player.id === nextPlayer.id ? 1 : 0,
       })),
     };
   });
 };
 
-export const discardRandomCardFromHand = async (player: Player) => {
+export const discardRandomCardFromHand = async (
+  gameState: GameState,
+  player: Player,
+) => {
   const randomCardFromHand =
     player.hand[Math.floor(Math.random() * player.hand.length)];
+
+  if (!randomCardFromHand) return gameState;
 
   return discardCard(randomCardFromHand);
 };

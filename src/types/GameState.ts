@@ -17,8 +17,6 @@ export interface Player {
   actionsAlreadyPlayed: number;
   actionsLeftToPlay: number;
   unitsLeftToPlay: number;
-  actionsBeforeConquestLeft: number;
-  actionsAfterConquestLeft: number;
 }
 
 export interface Place {

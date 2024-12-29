@@ -12,11 +12,17 @@ import {
   UnitCardSuit,
 } from '../types/Card';
 import {
+  destroyUnit,
   discardRandomCardFromHand,
   drawOneCard,
+  moveUnit,
   updateGameState,
 } from './game';
-import { askUserForPlayerTarget } from './userInputs';
+import {
+  makeUserChoosePlace,
+  makeUserChoosePlayer,
+  makeUserChooseUnit,
+} from './userInputs';
 
 export const cardTypes: CardType[] = [
   {
@@ -33,14 +39,72 @@ export const actionsCardBases: ActionCardBase[] = [
   {
     id: CardBaseId.TWO,
     title: '2',
+    onPlayed: async ({ card }) =>
+      updateGameState((prev) => ({
+        ...prev,
+        players: prev.players.map((player) =>
+          player.id === card.ownerId
+            ? { ...player, unitsLeftToPlay: player.unitsLeftToPlay + 1 }
+            : player,
+        ),
+      })),
   },
   {
     id: CardBaseId.THREE,
     title: '3',
+    onPlayed: async ({ gameState, card }) => {
+      if (!card.ownerId) return gameState;
+
+      const targetId = await makeUserChooseUnit(card.ownerId, {
+        maximumUnitValue: card.improved ? undefined : 2,
+      });
+
+      const target = gameState.places
+        .map(({ units }) => units)
+        .flat()
+        .find(({ id }) => id === targetId);
+
+      if (!target) return gameState;
+
+      return destroyUnit(target);
+    },
   },
   {
     id: CardBaseId.FOUR,
     title: '4',
+    onPlayed: async ({ gameState, card }) => {
+      const moveOneUnit = async () => {
+        if (!card.ownerId) return gameState;
+
+        const targetId = await makeUserChooseUnit(card.ownerId, {
+          maximumUnitValue: card.improved ? undefined : 2,
+        });
+
+        const originPlace = gameState.places.find(({ units }) =>
+          units.find((unit) => unit.id === targetId),
+        );
+
+        const target = originPlace?.units.find((unit) => unit.id === targetId);
+
+        if (!originPlace || !target) return gameState;
+
+        const destinationId = await makeUserChoosePlace(card.ownerId, {
+          excludePlaceId: originPlace.id,
+        });
+
+        if (!destinationId) return gameState;
+
+        return moveUnit(target, destinationId);
+      };
+
+      const updatedGameState = await moveOneUnit();
+
+      if (card.improved) {
+        return moveOneUnit();
+      }
+
+      return updatedGameState;
+    },
   },
   {
     id: CardBaseId.FIVE,
@@ -125,12 +189,13 @@ export const actionCardSuits: ActionCardSuit[] = [
   {
     id: CardSuitId.CLUB,
     title: '♣️',
-    onPlayed: async ({ gameState }) => {
-      const targetId = await askUserForPlayerTarget();
+    onPlayed: async ({ gameState, card }) => {
+      if (!card.ownerId) return gameState;
+      const targetId = await makeUserChoosePlayer(card.ownerId);
       const target = gameState.players.find(({ id }) => id === targetId);
       if (!target) return gameState;
       if (target.hand.length > 5) {
-        return discardRandomCardFromHand(target);
+        return discardRandomCardFromHand(gameState, target);
       }
       return drawOneCard(gameState, target.id);
     },
