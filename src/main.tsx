@@ -11,6 +11,7 @@ import { initReactI18next } from 'react-i18next';
 import en from '../assets/i18n/en.json';
 import fr from '../assets/i18n/fr.json';
 import { Router } from './Router.tsx';
+import './index.css';
 
 i18next
   .use(I18nextBrowserLanguageDetector)

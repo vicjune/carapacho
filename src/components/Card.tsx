@@ -1,4 +1,3 @@
-import { Bolt } from '@mui/icons-material';
 import { alpha, Box, SxProps } from '@mui/material';
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -104,63 +103,45 @@ export const Card: FC<{
               alignItems: 'center',
             }}
           >
-            <Box sx={{ mr: scaled(1) }}>{t(`CARD.TYPE.${card.type}`)}</Box>
+            <Box
+              sx={{
+                mr: scaled(1),
+                fontFamily: 'Belwe',
+                color: 'white',
+                textShadow:
+                  '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000',
+              }}
+            >
+              {t(`CARD.TYPE.${card.type}`)}
+            </Box>
           </Box>
-          {card.type === CardTypeId.UNIT ? (
+          {card.type === CardTypeId.UNIT && (
             <Box
               sx={{
                 display: 'flex',
                 alignItems: 'center',
               }}
             >
-              <Box
-                sx={{
-                  fontSize: scaled(14),
-                  bgcolor: 'grey',
-                  borderTopLeftRadius: scaled(4),
-                  borderBottomLeftRadius: scaled(4),
-                  px: scaled(1),
-                  py: scaled(0.2),
-                  color: 'white',
-                  mr: scaled(-1),
-                  zIndex: 1,
-                }}
-              >
-                {t('VALUE')}
-              </Box>
               <Box
                 component="span"
                 sx={{
                   fontWeight: 'bold',
-                  bgcolor: 'grey',
-                  fontSize: scaled(28),
+                  fontSize: scaled(35),
+                  border: '1px solid black',
                   color: 'white',
                   borderRadius: '50%',
-                  height: scaled(40),
-                  width: scaled(40),
+                  height: scaled(50),
+                  width: scaled(50),
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  fontFamily: 'Belwe',
+                  textShadow:
+                    '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000',
                 }}
               >
                 {(card as UnitCard).base.value}
               </Box>
-            </Box>
-          ) : (
-            <Box
-              sx={{
-                bgcolor: 'grey',
-
-                color: 'white',
-                borderRadius: '50%',
-                height: scaled(40),
-                width: scaled(40),
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Bolt sx={{ color: 'white', fontSize: scaled(30) }} />
             </Box>
           )}
         </Box>
