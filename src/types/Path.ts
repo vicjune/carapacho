@@ -1,4 +1,5 @@
 export enum Path {
   HOME = '/',
-  GAME = '/game',
+  GAME = '/game/:gameId',
+  PRINT = '/print',
 }

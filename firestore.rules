@@ -2,18 +2,66 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function mapHasOnlyKeys(map, keys) {
+      return map.diff({}).addedKeys().hasOnly(keys)
+    }
 
-    // This rule allows anyone with your Firestore database reference to view, edit,
-    // and delete all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Firestore database will be denied until you Update
-    // your rules
-    match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2025, 1, 28);
+  	function allowedFields(fields) {
+    	return (
+        (resource != null && request.resource.data.diff(resource.data).affectedKeys().hasOnly(fields)) ||
+        (resource == null && mapHasOnlyKeys(request.resource.data, fields))
+      );
+    }
+
+    function affected(fields) {
+    	return request.resource.data.diff(resource.data).affectedKeys().hasAny(fields);
+    }
+
+    match /games/{gameId} {
+      allow read;
+
+      function updateValidation(oldDoc, newDoc) {
+        return (
+          oldDoc.step == 'LOBBY' &&
+          (!affected(['scoreForVictory']) || (newDoc.scoreForVictory is number && newDoc.scoreForVictory > 0))
+        )
+      }
+      allow update: if (
+        allowedFields(['scoreForVictory']) &&
+        updateValidation(resource.data, request.resource.data)
+      );
+
+      match /players/{playerId} {
+        function getGame() {
+          return get(/databases/$(database)/documents/games/$(gameId)).data;
+        }
+
+        allow read;
+
+        function updateValidation(newDoc) {
+          return (
+            getGame().step == 'LOBBY' &&
+            (!affected(['name']) || (newDoc.name is string && newDoc.name.trim().size() > 0)) &&
+            (!affected(['color']) || (newDoc.color is number && newDoc.color >= 0 && newDoc.color <= 17 ))
+          )
+        }
+        allow update: if (
+          allowedFields(['name', 'color']) &&
+          updateValidation(request.resource.data)
+        );
+
+        allow delete: if (
+          getGame().step == 'LOBBY'
+        );
+      }
+
+      match /places/{placeId} {
+        allow read;
+      }
+
+      match /cards/{cardId} {
+        allow read;
+      }
     }
   }
 }

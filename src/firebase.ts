@@ -75,7 +75,7 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const functions = getFunctions(app, 'europe-west1');
 
-if (process.env.REACT_APP_ENV === 'local') {
+if (import.meta.env.VITE_FB_EMULATORS) {
   connectFirestoreEmulator(db, 'localhost', 8080);
   connectFunctionsEmulator(functions, 'localhost', 5001);
 }
